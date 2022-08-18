@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="51b4c7d7-47cb-4980-8349-f4021ebc3e60" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="testFlow" doc:id="56a2586f-c269-4102-ad68-e0d8587dcba1" >
+		<http:listener doc:name="Listener" doc:id="93ec95a7-a530-4b39-9f9a-0a78c31a242a" config-ref="HTTP_Listener_config" path="/test"/>
+		<set-variable value="#[[]]" doc:name="Set Variable" doc:id="11fa134f-6ea7-4584-920e-842f36fd7b4f" variableName="vJpaResponse"/>
+		<ee:transform doc:name="Transform Message" doc:id="271f8ce4-2f71-40a7-9be2-81de85432ed5" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="vPayload" ><![CDATA[%dw 2.0
+output application/json
+---
+{ 
+	vTraceId: vars.vHeaderID.TraceID, 
+	vSourceID: vars.vHeaderID.sourceID,
+	vUserID: vars.vHeaderID.vUserID,
+	recordId: vars.payload.recordId,
+	erdElement: vars.payload.erdElement,
+	oldValue: vars.payload.oldValue,
+	newValue: vars.payload.newValue
+	
+	
+}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<choice doc:name="Choice" doc:id="70178459-2378-4124-a328-0368d6272836">
+			<when expression="#[payload.erdElement == null]">
+				<ee:transform doc:name="Transform Message" doc:id="3370c1d2-886a-413c-82a7-449ebfbd1075" >
+					<ee:message >
+					</ee:message>
+					<ee:variables >
+						<ee:set-variable variableName="vJpaResponse" ><![CDATA[%dw 2.0
+output application/json
+---
+vars.vJpaResponse +{
+	"erdElement": payload.erdElement,
+	"seqNo": payload.counter,
+	"recordId": payload.recordId,
+	"logType": payload."INVALID",
+	"logErrorMessage":"ERD ELEMRNT IS NULL"
+}]]></ee:set-variable>
+					</ee:variables>
+				</ee:transform>
+			</when>
+			<when expression="#[payload.recordId == null]">
+				<ee:transform doc:name="Transform Message" doc:id="2c4c35b2-b661-46fa-9286-e341a58553b7" >
+					<ee:message >
+					</ee:message>
+					<ee:variables >
+						<ee:set-variable variableName="vJpaResponse" ><![CDATA[%dw 2.0
+output application/json
+---
+vars.vJpaResponse +{
+	"erdElement": payload.erdElement,
+	"seqNo": payload.counter,
+	"recordId": payload.recordId,
+	"logType": payload."INVALID",
+	"logErrorMessage":"RECORDID IS NULL"
+}]]></ee:set-variable>
+					</ee:variables>
+				</ee:transform>
+			</when>
+			<when expression="#[payload.oldValue == null]">
+				<ee:transform doc:name="Transform Message" doc:id="05933e8f-eb29-4366-a6a1-797b709fc6a7" >
+					<ee:message >
+					</ee:message>
+					<ee:variables >
+						<ee:set-variable variableName="vJpaResponse" ><![CDATA[%dw 2.0
+output application/json
+---
+vars.vJpaResponse +{
+	"erdElement": payload.erdElement,
+	"seqNo": payload.counter,
+	"recordId": payload.recordId,
+	"logType": payload."INVALID",
+	"logErrorMessage":"OLD VALUEIS NULL"
+}]]></ee:set-variable>
+					</ee:variables>
+				</ee:transform>
+			</when>
+			<otherwise >
+				<ee:transform doc:name="Transform Message" doc:id="4f574677-b084-417d-af72-2faa5f8245da" >
+					<ee:message >
+					</ee:message>
+					<ee:variables >
+						<ee:set-variable variableName="vJpaResponse" ><![CDATA[%dw 2.0
+output application/json
+---
+vars.vJpaResponse +{
+	"erdElement": payload.erdElement,
+	"seqNo": payload.counter,
+	"recordId": payload.recordId,
+	"logType": payload."INVALID",
+	"logErrorMessage":"Data inserted succesfuly "
+}]]></ee:set-variable>
+					</ee:variables>
+				</ee:transform>
+			</otherwise>
+		</choice>
+		<ee:transform doc:name="Transform Message" doc:id="5b036a59-9ffc-48af-a242-160e89733ae0">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+vars.vJpaResponse]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
