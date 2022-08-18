@@ -22,8 +22,8 @@ output application/json
 	vTraceId: vars.vHeaderID.TraceID, 
 	vSourceID: vars.vHeaderID.sourceID,
 	vUserID: vars.vHeaderID.vUserID,
-	myId: vars.payload.myId,
-	myElement: vars.payload.myElement,
+	recordId: vars.payload.recordId,
+	erdElement: vars.payload.erdElement,
 	oldValue: vars.payload.oldValue,
 	newValue: vars.payload.newValue
 	
@@ -32,7 +32,7 @@ output application/json
 			</ee:variables>
 		</ee:transform>
 		<choice doc:name="Choice" doc:id="70178459-2378-4124-a328-0368d6272836">
-			<when expression="#[payload.myElement == null]">
+			<when expression="#[payload.erdElement == null]">
 				<ee:transform doc:name="Transform Message" doc:id="3370c1d2-886a-413c-82a7-449ebfbd1075" >
 					<ee:message >
 					</ee:message>
@@ -41,16 +41,16 @@ output application/json
 output application/json
 ---
 vars.vJpaResponse +{
-	"myElement": payload.myElement,
+	"erdElement": payload.erdElement,
 	"seqNo": payload.counter,
-	"myId": payload.myId,
+	"recordId": payload.recordId,
 	"logType": payload."INVALID",
 	"logErrorMessage":"ERD ELEMRNT IS NULL"
 }]]></ee:set-variable>
 					</ee:variables>
 				</ee:transform>
 			</when>
-			<when expression="#[payload.myId == null]">
+			<when expression="#[payload.recordId == null]">
 				<ee:transform doc:name="Transform Message" doc:id="2c4c35b2-b661-46fa-9286-e341a58553b7" >
 					<ee:message >
 					</ee:message>
@@ -59,16 +59,16 @@ vars.vJpaResponse +{
 output application/json
 ---
 vars.vJpaResponse +{
-	"myElement": payload.myElement,
+	"erdElement": payload.erdElement,
 	"seqNo": payload.counter,
-	"myId": payload.myId,
+	"recordId": payload.recordId,
 	"logType": payload."INVALID",
 	"logErrorMessage":"RECORDID IS NULL"
 }]]></ee:set-variable>
 					</ee:variables>
 				</ee:transform>
 			</when>
-			<when expression="#[payload.myValue == null]">
+			<when expression="#[payload.oldValue == null]">
 				<ee:transform doc:name="Transform Message" doc:id="05933e8f-eb29-4366-a6a1-797b709fc6a7" >
 					<ee:message >
 					</ee:message>
@@ -77,9 +77,9 @@ vars.vJpaResponse +{
 output application/json
 ---
 vars.vJpaResponse +{
-	"myElement": payload.myElement,
+	"erdElement": payload.erdElement,
 	"seqNo": payload.counter,
-	"myId": payload.myId,
+	"recordId": payload.recordId,
 	"logType": payload."INVALID",
 	"logErrorMessage":"OLD VALUEIS NULL"
 }]]></ee:set-variable>
@@ -95,9 +95,9 @@ vars.vJpaResponse +{
 output application/json
 ---
 vars.vJpaResponse +{
-	"myElement": payload.myElement,
+	"erdElement": payload.erdElement,
 	"seqNo": payload.counter,
-	"myId": payload.myId,
+	"recordId": payload.recordId,
 	"logType": payload."INVALID",
 	"logErrorMessage":"Data inserted succesfuly "
 }]]></ee:set-variable>
