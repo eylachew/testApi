@@ -113,5 +113,6 @@ output application/json
 vars.vJpaResponse]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="51c0f9f5-bab9-4c07-9bc5-9dd4cba35a2a" message="#[payload]"/>
 	</flow>
 </mule>
