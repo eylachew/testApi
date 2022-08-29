@@ -31,6 +31,7 @@ output application/json
 }]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="16255caf-6029-420f-95e8-330571af9c23" message="#[payload]"/>
 		<choice doc:name="Choice" doc:id="70178459-2378-4124-a328-0368d6272836">
 			<when expression="#[payload.myElement == null]">
 				<ee:transform doc:name="Transform Message" doc:id="3370c1d2-886a-413c-82a7-449ebfbd1075" >
@@ -111,6 +112,36 @@ vars.vJpaResponse +{
 output application/json
 ---
 vars.vJpaResponse]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="6d95b7e3-979a-455d-b92d-a3a15565582d" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xlsx header = false
+---
+"sheet1": [{
+	"Report Name":"show my test"
+},{
+	"columnHeader1":"show my test",
+	"columnHeader2":"erdElement",
+	"columnHeader3":"seqNo",
+	"columnHeader4":"logType",
+	"columnHeader5":"logErrorMessage"
+	
+}] ++ (payload map{
+	"showMyTest": $.MYTEST,
+	"erdElement": $.ERDELEMENT,
+	"seqNumber": $.SEQNO,
+	"logType": $.LOGTYPE,
+	"logErrorMessage": $.LOGERRORMESSAGE
+	
+	
+})
+
+
+
+
+]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 	</flow>
