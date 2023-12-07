@@ -42,10 +42,11 @@ output application/json
 ---
 vars.vJpaResponse +{
 	"erdElement": payload.erdElement,
-	"seqNo": payload.counter,
+	"seqNo": payload.seqNo,
 	"recordId": payload.recordId,
-	"logType": payload."INVALID",
-	"logErrorMessage":"ERD ELEMRNT IS NULL"
+	"logType": payload.logType,
+	"logErrorMessage":"ERD ELEMRNT IS NULL",
+	"time":now()
 }]]></ee:set-variable>
 					</ee:variables>
 				</ee:transform>
@@ -62,8 +63,9 @@ vars.vJpaResponse +{
 	"erdElement": payload.erdElement,
 	"seqNo": payload.counter,
 	"recordId": payload.recordId,
-	"logType": payload."INVALID",
-	"logErrorMessage":"RECORDID IS NULL"
+	"logType": payload.logType,
+	"logErrorMessage":"RECORDID IS NULL",
+	"time":now()
 }]]></ee:set-variable>
 					</ee:variables>
 				</ee:transform>
@@ -81,7 +83,8 @@ vars.vJpaResponse +{
 	"seqNo": payload.counter,
 	"recordId": payload.recordId,
 	"logType": payload."INVALID",
-	"logErrorMessage":"OLD VALUEIS NULL"
+	"logErrorMessage":"OLD VALUEIS NULL",
+	"time":now()
 }]]></ee:set-variable>
 					</ee:variables>
 				</ee:transform>
@@ -96,10 +99,11 @@ output application/json
 ---
 vars.vJpaResponse +{
 	"erdElement": payload.erdElement,
-	"seqNo": payload.counter,
+	"seqNo": payload.seqNo,
 	"recordId": payload.recordId,
-	"logType": payload."INVALID",
-	"logErrorMessage":"Data inserted succesfuly "
+	"logType": payload.logType,
+	"logErrorMessage":"Data inserted succesfuly ",
+	"time":now()
 }]]></ee:set-variable>
 					</ee:variables>
 				</ee:transform>
@@ -125,14 +129,16 @@ output application/xlsx header = false
 	"columnHeader2":"erdElement",
 	"columnHeader3":"seqNo",
 	"columnHeader4":"logType",
-	"columnHeader5":"logErrorMessage"
+	"columnHeader5":"logErrorMessage",
+	"colonmHeader6":"time"
 	
 }] ++ (payload map{
 	"showMyTest": $.MYTEST,
 	"erdElement": $.ERDELEMENT,
 	"seqNumber": $.SEQNO,
 	"logType": $.LOGTYPE,
-	"logErrorMessage": $.LOGERRORMESSAGE
+	"logErrorMessage": $.LOGERRORMESSAGE,
+	"time":$.time
 	
 	
 })
