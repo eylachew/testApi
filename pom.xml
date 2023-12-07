@@ -34,7 +34,7 @@
 				 <uri>https://anypoint.mulesoft.com/</uri>
 				 <muleVersion>4.4.0</muleVersion>
 				 <username>mydevelopement1</username>
-				 <applicationName></applicationName>
+				 <applicationName>test</applicationName>
 				 <password>Salome@2021</password>
 				 <environment>Sandbox</environment>
 				 <workers>1</workers>
