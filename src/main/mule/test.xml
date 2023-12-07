@@ -11,6 +11,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 	<flow name="testFlow" doc:id="56a2586f-c269-4102-ad68-e0d8587dcba1" >
 		<http:listener doc:name="Listener" doc:id="93ec95a7-a530-4b39-9f9a-0a78c31a242a" config-ref="HTTP_Listener_config" path="/test"/>
 		<set-variable value="#[[]]" doc:name="Set Variable" doc:id="11fa134f-6ea7-4584-920e-842f36fd7b4f" variableName="vJpaResponse"/>
+		<logger level="INFO" doc:name="Logger" doc:id="00dd142b-edba-4eb5-b834-f048f5589480" message="#[payload]"/>
 		<ee:transform doc:name="Transform Message" doc:id="271f8ce4-2f71-40a7-9be2-81de85432ed5" >
 			<ee:message >
 			</ee:message>
